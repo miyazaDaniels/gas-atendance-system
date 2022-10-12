@@ -1,2 +1,2 @@
-# gas-atendance-system
+# gas-attendance-system
 Attendance logger using Google Apps Script
