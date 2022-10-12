@@ -1,0 +1,61 @@
+<script>
+  let member = null;
+
+  window.addEventListener('DOMContentLoaded', () => {
+    $('#closeModal , #modalBg').click(() => {
+     $('#modalArea').fadeOut();
+      clearMember()
+    });
+  });
+
+  const clearMember = () => {
+    member = null;
+  }
+
+  const openModal = id => {
+    member = members.filter(person => {
+      return person.id == id;
+    });
+    $('#memberName').html(member[0].name + " 先生");
+    $('#modalMessage').html("");
+    $('#modalArea').fadeIn();
+    $(".status-button").prop("disabled", false);
+  }
+
+  const getMembersHtml = () => {
+    let html = "";
+    members.forEach(person => {
+      html += '<button onclick="openModal(' + person.id + ')">' + person.name + "</button>";
+    });
+    return html;
+  };
+
+  const sendData = statusId => {
+    $(".status-button").prop("disabled", true);
+    const status = getStatus(statusId);
+    google.script.run.withSuccessHandler(date => {
+      google.script.run.withSuccessHandler(sendDataImpl(date, status)).writeData(date, member[0], status);
+    }).getNow();
+  };
+
+  const sendDataImpl = (date, status) => {
+    displayMessage(date, status);
+    setTimeout(() => {
+      $('#modalArea').fadeOut();
+    }, 3000);
+  };
+
+  const displayMessage = (date, status) => {
+    $('#modalMessage').html(date + " " + status + "を受け付けました");
+  };
+
+  const getStatus = statusId => {
+    const statusDefinition = {
+      "1": "出勤",
+      "2": "退勤",
+      "3": "休憩",
+      "4": "再開"
+    }
+    return statusDefinition[statusId];
+  };
+</script>

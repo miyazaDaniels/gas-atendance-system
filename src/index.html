@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('Stylesheet'); ?>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <h1><?=TITLE?></h1>
+    <div id="container"></div>
+    <!-- モーダルエリアここから -->
+    <section id="modalArea" class="modal-area">
+      <div id="modalBg" class="modal-bg"></div>
+      <div class="modal-wrapper">
+        <div class="modal-contents">
+          <h1 id="memberName">name</h1>
+          <p id="modalMessage"></p>
+          <button class="status-button" onclick="sendData(1)">出勤</button>
+          <button class="status-button" onclick="sendData(2)">退勤</button>
+          <button class="status-button" onclick="sendData(3)">休憩</button>
+          <button class="status-button" onclick="sendData(4)">再開</button>
+        </div>
+        <div id="closeModal" class="close-modal">×</div>
+      </div>
+    </section>
+    <?!= include('JavaScript'); ?>
+    <script type="text/javascript">
+    let members;
+    const main = () => {
+      members = JSON.parse(<?=members?>);
+      $("#container").append(getMembersHtml());
+    };
+    main();
+    </script>
+  </body>
+</html>
